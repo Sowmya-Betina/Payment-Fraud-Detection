@@ -60,7 +60,7 @@ tuned separately on each test set rather than assumed at 0.5.
 
 ```
 pandas, numpy, scikit-learn, imbalanced-learn, xgboost, tensorflow,
-shap, matplotlib, kagglehub, statsmodels
+shap, matplotlib, kagglehub, statsmodels, pytest 
 ```
 
 ## Reproducing results
@@ -69,3 +69,21 @@ Each notebook that trains a deep model saves a `checkpoint_*.pkl` (and
 sometimes `.npy` arrays) so that downstream analysis cells (SHAP, threshold
 tuning, error analysis, training-time extraction) can be re-run later without
 retraining. 
+
+## Tests
+
+`test_jaya_helpers.py` unit tests the helper functions behind the
+Jaya hyperparameter search (candidate generation and bound-clipping):
+`random_candidate`, `clip_candidate` and `snap_discrete`. These verify that
+generated hyperparameter candidates always stay within the defined search
+bounds and correctly snap to valid discrete values (e.g. GRU units must be
+64, 128 or 256), independently of whether any particular search run finds
+a good configuration.
+
+Run with:
+
+```
+pytest test_jaya_helpers.py -v
+```
+
+13 tests, all passing.
